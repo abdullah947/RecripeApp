@@ -58,8 +58,10 @@ dependencies {
 
     implementation(libs.coil.compose)
 
+    implementation(libs.lottie.compose)
+
     // Module list
-    implementation(project(":network"))
+    implementation(project(":data:network"))
 
 
 

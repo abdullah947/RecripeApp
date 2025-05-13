@@ -9,6 +9,7 @@ data class MakeRecipeScreenState(
     val textSearch: TextFieldValue = TextFieldValue(),
     val btnText: String = "Search",
     val placeHolderText: String = "Add Ingredients",
+    val txtImgLoadFail: String = "Failed to load image",
     val title: String = "",
     val imageUrl: String = "",
     val isMakeBtnClicked: Boolean = false,

@@ -51,7 +51,7 @@ class DetailRecipeViewModel(
     private fun getMakeRecipeDetail(dish: GridDish) {
 
         viewModelScope.launch(Dispatchers.IO) {
-            val result = repository.getRandomMealsById(dish.id, ApiKeys.SPOON_API_KEY)
+            val result = repository.getRandomMealsById(dish.id, ApiKeys.SPOON_API)
             state = when (result) {
                 is NetworkResult.Success -> {
 

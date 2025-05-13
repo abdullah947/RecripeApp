@@ -118,7 +118,8 @@ fun MakeRecipeScreen(
                         items = state.recipeList,
                         onItemClick = { dish ->
                             onItemClick(dish)
-                        }
+                        },
+                        imgLoadFail = state.txtImgLoadFail
                     )
                 }
 

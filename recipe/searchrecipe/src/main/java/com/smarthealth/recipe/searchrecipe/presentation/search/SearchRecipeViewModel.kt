@@ -25,7 +25,6 @@ class SearchRecipeViewModel(private val repository: SearchRecipeRepo) : ViewMode
     }
 
     fun onEvent(actionEvents: ActionEvent) = viewModelScope.launch {
-
         when (actionEvents) {
             is ActionEvent.OnTextChange -> {
                 state = state.copy(textSearch = actionEvents.text)
@@ -103,7 +102,7 @@ class SearchRecipeViewModel(private val repository: SearchRecipeRepo) : ViewMode
 
     private fun getRandomRecipeData() {
         viewModelScope.launch(Dispatchers.IO) {
-            val result = repository.getRandomMeals(10, ApiKeys.SPOON_API_KEY)
+            val result = repository.getRandomMeals(10, ApiKeys.SPOON_API)
 
             state = when (result) {
                 is NetworkResult.Success -> {

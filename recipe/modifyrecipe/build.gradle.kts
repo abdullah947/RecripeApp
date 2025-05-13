@@ -57,7 +57,7 @@ dependencies {
     
 
     // Module list
-    implementation(project(":network"))
+    implementation(project(":data:network"))
     implementation(project(":shared"))
 
 }

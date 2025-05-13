@@ -43,8 +43,9 @@ android {
 
 dependencies {
 
-    implementation(project(":network"))
     implementation(project(":shared"))
+    implementation(project(":data:local"))
+    implementation(project(":data:network"))
     implementation(project(":recipe:searchrecipe"))
     implementation(project(":recipe:makerecipe"))
     implementation(project(":recipe:modifyrecipe"))

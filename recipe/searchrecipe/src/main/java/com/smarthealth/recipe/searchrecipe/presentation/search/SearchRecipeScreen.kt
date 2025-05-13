@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import com.smarthealth.recipe.searchrecipe.R
 import com.smarthealth.shared.data.models.GridDish
 import com.smarthealth.shared.presentation.components.CustomSearchbar
+import com.smarthealth.shared.presentation.components.FavouriteList
 import com.smarthealth.shared.presentation.components.TwoColumnGrid
 
 
@@ -68,6 +69,15 @@ fun SearchRecipeScreen(
         }
         Spacer(modifier = Modifier.height(16.dp))
 
+        FavouriteList(
+            items = state.recipeList,
+            onItemClick = { dish ->
+                onItemClick(dish)
+            },
+            imgLoadFail = state.txtImgLoadFail
+        )
+
+
         if (state.isLoading) {
             Box(
                 modifier = Modifier.fillMaxSize(),
@@ -99,7 +109,8 @@ fun SearchRecipeScreen(
                     items = state.recipeList,
                     onItemClick = { dish ->
                         onItemClick(dish)
-                    }
+                    },
+                    imgLoadFail = state.txtImgLoadFail
                 )
             }
 

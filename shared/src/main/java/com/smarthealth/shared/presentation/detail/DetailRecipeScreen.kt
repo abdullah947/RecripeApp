@@ -1,6 +1,5 @@
 package com.smarthealth.shared.presentation.detail
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,9 +23,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberAsyncImagePainter
+import androidx.compose.ui.unit.sp
+import coil.compose.SubcomposeAsyncImage
+import coil.request.ImageRequest
+import com.smarthealth.shared.R
 import com.smarthealth.shared.presentation.components.CustomTextField
+import com.smarthealth.shared.presentation.components.LottieLoader
 import com.smarthealth.shared.presentation.components.NameText
 
 @Composable
@@ -59,7 +64,8 @@ fun RecipeDetailScreen(
                 instructions = state.instructions,
                 ingredients = state.ingredients,
                 btnModifyText = state.btnModifyText,
-                onclick = onclick
+                onclick = onclick,
+                txtImgLoadFail = state.txtImgLoadFail
             )
         }
     }
@@ -70,10 +76,12 @@ fun RecipeDetailScreen(
 fun DetailScreen(
     title: String,
     image: String,
+    txtImgLoadFail:String,
     instructions: String,
     ingredients: String,
     btnModifyText: String,
     onclick: () -> Unit
+
 
 ) {
     Column(
@@ -82,14 +90,36 @@ fun DetailScreen(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(
-            painter = rememberAsyncImagePainter(image),
+
+        SubcomposeAsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(image)
+                .crossfade(true)
+                .build(),
             contentDescription = "ImgDish",
             modifier = Modifier
                 .fillMaxWidth()
                 .height(180.dp)
                 .clip(RoundedCornerShape(20.dp)),
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop,
+            loading = {
+                LottieLoader(resId = R.raw.image_loading, size = 100.dp)
+            },
+            error = {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(100.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = txtImgLoadFail,
+                        color = Color.Red,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
         )
         NameText(content = title)
         CustomTextField(heading = "Ingredients", text = ingredients, height = 80.0)

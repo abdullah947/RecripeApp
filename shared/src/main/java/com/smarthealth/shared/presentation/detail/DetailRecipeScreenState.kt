@@ -6,5 +6,7 @@ data class DetailRecipeScreenState(
     val isLoading: Boolean = true,
     val instructions: String = "",
     val ingredients: String = "",
+    val txtImgLoadFail: String = "Failed to load image",
     val btnModifyText: String = "Modify Recipe"
+
 )

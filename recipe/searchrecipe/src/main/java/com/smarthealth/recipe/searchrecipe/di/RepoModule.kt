@@ -6,7 +6,7 @@ import com.smarthealth.recipe.searchrecipe.domain.repo.SearchRecipeRepo
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
-val SearchRecipeRepoModule = module {
+val searchRecipeRepoModule = module {
     single<SearchRecipeRepo> {
         SearchRecipeRepoImpl(get(named("MealApi")), get(named("SpoonApi")))
     }

@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 sealed class ModifyRecipeScreens : Route {
 
     @Serializable
-    data object ModifyRecipePoint : ModifyRecipeScreens()
+    data object ModifyRecipeEntryPoint : ModifyRecipeScreens()
 
     @Serializable
     data object ModifyRecipe : ModifyRecipeScreens()

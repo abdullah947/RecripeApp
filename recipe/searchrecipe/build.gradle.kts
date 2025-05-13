@@ -58,7 +58,7 @@ dependencies {
     implementation(libs.coil.compose)
 
     // Module list
-    implementation(project(":network"))
+    implementation(project(":data:network"))
     implementation(project(":shared"))
     implementation(project(":recipe:makerecipe"))
 

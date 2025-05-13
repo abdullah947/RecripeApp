@@ -21,8 +21,9 @@ dependencyResolutionManagement {
 
 rootProject.name = "RecipeFinder"
 include(":app")
-include(":network")
 include(":recipe:searchrecipe")
 include(":recipe:modifyrecipe")
 include(":recipe:makerecipe")
 include(":shared")
+include(":data:local")
+include(":data:network")

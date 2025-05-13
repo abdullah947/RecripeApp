@@ -10,9 +10,11 @@ data class SearchRecipeScreenState(
     val btnMakeText: String = "Make Recipe",
     val placeHolderText: String = "Search Recipe",
     val txtNoData: String = "No recipes found",
+    val txtImgLoadFail: String = "Failed to load image",
     val title: String = "",
     val imageUrl: String = "",
     val isLoading: Boolean = true,
     val isSuccess: Boolean = true,
-    val recipeList: List<GridDish> = emptyList()
+    val recipeList: List<GridDish> = emptyList(),
+    val favouriteList: List<GridDish> = emptyList()
 )

@@ -6,6 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.smarthealth.recipe.makerecipe.navigation.makeRecipeGraph
+import com.smarthealth.recipe.modifyrecipe.navigation.ModifyRecipeScreens
+import com.smarthealth.recipe.modifyrecipe.navigation.modifyNavRecipeGraph
 import com.smarthealth.recipe.searchrecipe.navigation.SearchRecipeScreens
 import com.smarthealth.recipe.searchrecipe.navigation.searchRecipeNavGraph
 import com.smarthealth.shared.navigation.detailScreenNavGraph
@@ -47,6 +49,7 @@ fun AppNavGraph(
     ) {
         searchRecipeNavGraph(mainActivitySharedViewModel)
         makeRecipeGraph(mainActivitySharedViewModel)
-        detailScreenNavGraph(mainActivitySharedViewModel)
+        detailScreenNavGraph(onclick = {mainActivitySharedViewModel.navigate(ModifyRecipeScreens.ModifyRecipeEntryPoint)})
+        modifyNavRecipeGraph()
     }
 }

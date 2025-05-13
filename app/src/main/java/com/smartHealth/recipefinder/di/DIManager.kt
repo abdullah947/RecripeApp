@@ -4,7 +4,10 @@ import android.content.Context
 import com.smarthealth.recipe.makerecipe.di.makeRecipeRepoModule
 import com.smarthealth.recipe.makerecipe.di.makeRecipeRetrofitModuleMake
 import com.smarthealth.recipe.makerecipe.di.makeRecipeViewModelModule
-import com.smarthealth.recipe.searchrecipe.di.SearchRecipeRepoModule
+import com.smarthealth.recipe.modifyrecipe.di.modifyRecipeRepoModule
+import com.smarthealth.recipe.modifyrecipe.di.modifyRecipeRetrofitModuleMake
+import com.smarthealth.recipe.modifyrecipe.di.modifyRecipeViewModelModule
+import com.smarthealth.recipe.searchrecipe.di.searchRecipeRepoModule
 import com.smarthealth.recipe.searchrecipe.di.searchRecipeRetrofitModule
 import com.smarthealth.recipe.searchrecipe.di.searchRecipeViewModelModule
 import com.smarthealth.shared.di.detailRecipeRepoModule
@@ -33,23 +36,26 @@ class DIManager private constructor(private val application: Context) {
 
     private val repoModuleList
         get() = listOf(
-            SearchRecipeRepoModule,
+            searchRecipeRepoModule,
             makeRecipeRepoModule,
-            detailRecipeRepoModule
+            detailRecipeRepoModule,
+            modifyRecipeRepoModule
 
         )
     private val retrofitModuleList
         get() = listOf(
             searchRecipeRetrofitModule,
             makeRecipeRetrofitModuleMake,
-            detailRecipeRetrofitModuleMake
+            detailRecipeRetrofitModuleMake,
+            modifyRecipeRetrofitModuleMake
         )
 
     private val viewModelList
         get() = listOf(
             searchRecipeViewModelModule,
             makeRecipeViewModelModule,
-            detailRecipeViewModelModule
+            detailRecipeViewModelModule,
+            modifyRecipeViewModelModule
         )
 
     private val moduleList

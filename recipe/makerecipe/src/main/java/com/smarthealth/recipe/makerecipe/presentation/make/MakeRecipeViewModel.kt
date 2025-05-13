@@ -60,7 +60,7 @@ class MakeRecipeViewModel(private val repository: MakeRecipeRepo) : ViewModel() 
             state = state.copy(isMakeBtnClicked = true)
 
             val query = state.textSearch.text
-            val result = repository.getMealsByIngredients(query, ApiKeys.SPOON_API_KEY)
+            val result = repository.getMealsByIngredients(query, ApiKeys.SPOON_API)
 
             state = when (result) {
                 is NetworkResult.Success -> {
