@@ -8,7 +8,7 @@ import org.koin.dsl.module
 
 val detailRecipeViewModelModule = module {
     viewModel { (stateHandle: SavedStateHandle) ->
-        DetailRecipeViewModel(get(), stateHandle)
+        DetailRecipeViewModel(get(),get(), stateHandle)
     }
     viewModel {
         MainActivitySharedViewModel()

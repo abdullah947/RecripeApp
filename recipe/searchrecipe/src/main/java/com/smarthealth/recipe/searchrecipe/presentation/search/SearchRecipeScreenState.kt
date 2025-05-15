@@ -4,7 +4,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import com.smarthealth.shared.data.models.GridDish
 
 data class SearchRecipeScreenState(
-    val id: Int = 0,
+    val id: String = "",
     val textSearch: TextFieldValue = TextFieldValue(),
     val btnSearchText: String = "Search",
     val btnMakeText: String = "Make Recipe",
@@ -16,5 +16,6 @@ data class SearchRecipeScreenState(
     val isLoading: Boolean = true,
     val isSuccess: Boolean = true,
     val recipeList: List<GridDish> = emptyList(),
-    val favouriteList: List<GridDish> = emptyList()
+    val favouriteList: List<GridDish> = emptyList(),
+    val searchSuggestions: List<String> = emptyList()
 )

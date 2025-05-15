@@ -15,8 +15,9 @@ import com.smarthealth.shared.data.models.GridDish
 @Composable
 fun TwoColumnGrid(
     items: List<GridDish>,
-    onItemClick: (GridDish) -> Unit,
-    imgLoadFail: String
+    imgLoadFail: String,
+    onItemClick: (GridDish) -> Unit
+
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
@@ -30,8 +31,8 @@ fun TwoColumnGrid(
         items(items) { dish ->
             GridDishItem(
                 dish = dish,
-                onClick = { onItemClick(dish) },
-                txtImgLoadFail = imgLoadFail
+                onClick = onItemClick,
+                txtImgLoadFail = imgLoadFail,
             )
         }
     }

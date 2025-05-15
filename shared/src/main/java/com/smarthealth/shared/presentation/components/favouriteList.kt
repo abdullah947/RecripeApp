@@ -28,7 +28,7 @@ fun FavouriteList(
             GridDishItem(
                 dish = dish,
                 onClick = { onItemClick(dish) },
-                txtImgLoadFail = imgLoadFail
+                txtImgLoadFail = imgLoadFail,
             )
         }
     }

@@ -8,7 +8,10 @@ import org.koin.dsl.module
 
 val searchRecipeRepoModule = module {
     single<SearchRecipeRepo> {
-        SearchRecipeRepoImpl(get(named("MealApi")), get(named("SpoonApi")))
+        SearchRecipeRepoImpl(
+            get(named("MealApi")),
+            get(named("SpoonApi"))
+        )
     }
 }
 

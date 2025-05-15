@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -17,18 +16,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.smarthealth.recipe.modifyrecipe.R
+import kotlin.reflect.jvm.internal.impl.types.checker.TypeRefinementSupport.Enabled
 
 @Composable
 fun ChatBar(
     value: TextFieldValue,
     onValueChange: (TextFieldValue) -> Unit,
     placeholder: String = "",
-    onSendClick: () -> Unit
+    onSendClick: () -> Unit,
+    enabled: Boolean = false
 ) {
     Row(
         modifier = Modifier
@@ -55,11 +57,14 @@ fun ChatBar(
         Image(
             painter = painterResource(R.drawable.send_icon),
             contentDescription = "ImgDish",
+
             modifier = Modifier
                 .size(60.dp)
-                .clickable {
-                    onSendClick()
-                },
+                .graphicsLayer { alpha = if (enabled) 1f else 0.3f }
+                .then(
+                    if (enabled) Modifier.clickable { onSendClick() }
+                    else Modifier
+                ),
             contentScale = ContentScale.Crop
         )
     }

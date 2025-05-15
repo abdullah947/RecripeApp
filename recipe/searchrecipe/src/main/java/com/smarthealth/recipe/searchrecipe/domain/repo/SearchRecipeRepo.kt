@@ -7,4 +7,6 @@ import com.smarthealth.recipe.searchrecipe.data.api.models.searchrecipes.SearchR
 interface SearchRecipeRepo {
     suspend fun getMeals(query: String): NetworkResult<SearchRecipeResponseDTO>
     suspend fun getRandomMeals(number: Int, apiKey: String): NetworkResult<RandomRecipeResponseDTO>
+
+
 }

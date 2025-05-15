@@ -6,19 +6,27 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.smarthealth.network.utils.NetworkResult
-import com.smarthealth.recipe.searchrecipe.domain.repo.SearchRecipeRepo
+import com.smarthealth.local.data.db.models.SearchHistoryDTO
+import com.smarthealth.local.domain.repo.RecipeHistoryRepo
+import com.smarthealth.local.domain.repo.SearchHistoryRepo
 import com.smarthealth.network.utils.ApiKeys
-import com.smarthealth.recipe.searchrecipe.data.api.models.searchrecipes.toDomain
+import com.smarthealth.network.utils.NetworkResult
 import com.smarthealth.recipe.searchrecipe.data.api.models.randomrecipes.toDomain
+import com.smarthealth.recipe.searchrecipe.data.api.models.searchrecipes.toDomain
+import com.smarthealth.recipe.searchrecipe.domain.repo.SearchRecipeRepo
 import com.smarthealth.shared.data.models.GridDish
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class SearchRecipeViewModel(private val repository: SearchRecipeRepo) : ViewModel() {
+class SearchRecipeViewModel(
+    private val searchRepo: SearchRecipeRepo,
+    recipeHistoryRepo: RecipeHistoryRepo,
+    private val searchHistoryRepo: SearchHistoryRepo) : ViewModel() {
 
     var state by mutableStateOf(SearchRecipeScreenState())
         private set
+
+    val recipes = recipeHistoryRepo.getAllRecipes()
 
     init {
         getRandomRecipeData()
@@ -27,15 +35,27 @@ class SearchRecipeViewModel(private val repository: SearchRecipeRepo) : ViewMode
     fun onEvent(actionEvents: ActionEvent) = viewModelScope.launch {
         when (actionEvents) {
             is ActionEvent.OnTextChange -> {
-                state = state.copy(textSearch = actionEvents.text)
+                val query = actionEvents.text.text
+
+                val suggestions = if (query.isNotBlank()) {
+                    searchHistoryRepo.getSuggestions(query)
+                } else emptyList()
+
+                state = state.copy(
+                    textSearch = actionEvents.text,
+                    searchSuggestions = suggestions
+                )
             }
         }
     }
 
-     fun getSearchRecipeData() {
+
+
+    fun getSearchRecipeData() {
          viewModelScope.launch(Dispatchers.IO) {
              val query = state.textSearch.text
-             val result = repository.getMeals(query)
+             insertSearchToDb(query)
+             val result = searchRepo.getMeals(query)
 
              state = when (result) {
                  is NetworkResult.Success -> {
@@ -102,7 +122,7 @@ class SearchRecipeViewModel(private val repository: SearchRecipeRepo) : ViewMode
 
     private fun getRandomRecipeData() {
         viewModelScope.launch(Dispatchers.IO) {
-            val result = repository.getRandomMeals(10, ApiKeys.SPOON_API)
+            val result = searchRepo.getRandomMeals(10, ApiKeys.SPOON_API)
 
             state = when (result) {
                 is NetworkResult.Success -> {
@@ -149,7 +169,14 @@ class SearchRecipeViewModel(private val repository: SearchRecipeRepo) : ViewMode
             }
         }
     }
-
+    private fun insertSearchToDb(query: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val search = SearchHistoryDTO(
+                searchText = query
+            )
+            searchHistoryRepo.insertSearch(search)
+        }
+    }
     sealed class ActionEvent {
         data class OnTextChange(val text: TextFieldValue) : ActionEvent()
     }

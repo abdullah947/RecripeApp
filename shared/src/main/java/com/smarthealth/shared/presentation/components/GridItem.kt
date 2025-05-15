@@ -7,17 +7,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -39,36 +34,26 @@ import com.smarthealth.shared.data.models.GridDish
 @Composable
 fun GridDishItem(
     dish: GridDish,
-    onClick: () -> Unit,
-    txtImgLoadFail: String
+    txtImgLoadFail: String,
+    onClick: (GridDish) -> Unit,
 ) {
     Box(
         modifier = Modifier
             .width(130.dp)
-            .height(185.dp)
+            .height(165.dp)
             .background(
                 color = colorResource(R.color.light_gray_custom),
                 shape = RoundedCornerShape(16.dp)
             )
             .border(2.dp, Color.LightGray, shape = RoundedCornerShape(16.dp))
             .padding(12.dp)
-            .clickable { onClick() }
+            .clickable { onClick(dish) }
     ) {
-        Icon(
-            imageVector = Icons.Default.Favorite,
-            contentDescription = "Info",
-            tint = Color.Gray,
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .clickable { }
-        )
-
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            Spacer(modifier = Modifier.height(25.dp))
 
             SubcomposeAsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)

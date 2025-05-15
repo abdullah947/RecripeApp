@@ -23,6 +23,8 @@ material = "1.12.0"
 runtimeAndroid = "1.7.8"
 firebaseAuthKtx = "23.2.0"
 firebaseAppdistributionGradle = "5.1.1"
+ksp = "2.0.21-1.0.27"
+roomKtx = "2.6.1"
 
 
 [libraries]
@@ -57,6 +59,10 @@ androidx-runtime-android = { group = "androidx.compose.runtime", name = "runtime
 firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
 firebase-appdistribution-gradle = { group = "com.google.firebase", name = "firebase-appdistribution-gradle", version.ref = "firebaseAppdistributionGradle" }
 
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomKtx" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomKtx" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -64,4 +70,5 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinSerializationPlugin" }
 android-library = { id = "com.android.library", version.ref = "agp" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 

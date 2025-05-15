@@ -5,7 +5,7 @@ import com.smarthealth.recipe.makerecipe.data.models.IngredientsListItem
 import com.smarthealth.shared.data.models.GridDish
 
 data class MakeRecipeScreenState(
-    val id: Int = 0,
+    val id: String = "",
     val textSearch: TextFieldValue = TextFieldValue(),
     val btnText: String = "Search",
     val placeHolderText: String = "Add Ingredients",
@@ -13,6 +13,7 @@ data class MakeRecipeScreenState(
     val title: String = "",
     val imageUrl: String = "",
     val isMakeBtnClicked: Boolean = false,
+    var isFavourite: (GridDish) -> Boolean = { false },
     val isLoading: Boolean = true,
     val isSuccess: Boolean = true,
     val recipeList: List<GridDish> = emptyList(),

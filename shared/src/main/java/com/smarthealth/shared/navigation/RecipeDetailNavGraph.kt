@@ -10,6 +10,8 @@ import org.koin.androidx.compose.koinViewModel
 fun NavGraphBuilder.detailScreenNavGraph(onclick: () -> Unit) {
     composable<RecipeDetailScreens.DetailScreen> {
         val viewModel: DetailRecipeViewModel = koinViewModel()
-        RecipeDetailScreen(state = viewModel.state, onclick = onclick)
+        RecipeDetailScreen(state = viewModel.state,
+            onclick = onclick,
+            onAddToFavorite = {viewModel.onBtnFavouriteClick()})
     }
 }

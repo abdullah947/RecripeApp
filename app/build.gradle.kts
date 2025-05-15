@@ -68,6 +68,10 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
 
+    implementation(libs.koin.androidx.compose)
+    implementation(libs.koin.test)
+    implementation(libs.koin.android.test)
+
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
     implementation(libs.androidx.navigation.compose)

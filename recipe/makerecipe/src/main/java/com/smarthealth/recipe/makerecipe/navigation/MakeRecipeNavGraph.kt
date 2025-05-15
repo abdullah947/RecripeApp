@@ -4,7 +4,6 @@ package com.smarthealth.recipe.makerecipe.navigation
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.smarthealth.recipe.makerecipe.presentation.make.MakeRecipeScreen
@@ -13,7 +12,6 @@ import com.smarthealth.shared.navigation.RecipeDetailScreens
 import com.smarthealth.shared.presentation.viewmodels.MainActivitySharedViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.serialization.json.Json
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -32,8 +30,16 @@ fun NavGraphBuilder.makeRecipeGraph(mainActivitySharedViewModel: MainActivitySha
                         viewModel.getRecipeData()
                     }
                 }, onItemClick = { dish ->
-                    val dishJson = Json.encodeToString(dish)
-                    mainActivitySharedViewModel.navigate(RecipeDetailScreens.DetailScreen(dishJson))
+                    // val dishJson = Json.encodeToString(dish)
+                    mainActivitySharedViewModel.navigate(
+                        RecipeDetailScreens.DetailScreen(
+                            id = dish.id,
+                            title = dish.title,
+                            imageUrl = dish.imageUrl,
+                            instructions = dish.instructions,
+                            ingredientsList = dish.ingredientsList
+                        )
+                    )
                 }
             )
         }

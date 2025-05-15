@@ -62,6 +62,7 @@ dependencies {
 
     // Module list
     implementation(project(":data:network"))
+    implementation(project(":data:local"))
 
 
 
