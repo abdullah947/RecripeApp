@@ -11,11 +11,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContent
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,6 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -38,18 +37,15 @@ import com.smarthealth.shared.presentation.components.NameText
 @Composable
 fun RecipeDetailScreen(
     state: DetailRecipeScreenState = DetailRecipeScreenState(),
-    onclick: () -> Unit,
-    onAddToFavorite: () -> Unit
+    actionEvent: (DetailRecipeViewModel.ActionEvent) -> Unit = {},
+    onBtnModifyClick: () -> Unit,
 ) {
     if (state.isLoading) {
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            CircularProgressIndicator(
-                color = Color.LightGray,
-                modifier = Modifier.size(30.dp)
-            )
+            LottieLoader(R.raw.screen_loading, 150.dp)
         }
     } else {
         Column(
@@ -65,11 +61,11 @@ fun RecipeDetailScreen(
                 image = state.imageUrl,
                 instructions = state.instructions,
                 ingredients = state.ingredients,
-                btnModifyText = state.btnModifyText,
-                onclick = onclick,
-                txtImgLoadFail = state.txtImgLoadFail,
+                btnModifyText = stringResource(R.string.btnModifyText),
+                onclick = onBtnModifyClick,
+                txtImgLoadFail = stringResource(R.string.txtImgLoadFail),
                 btnFavouriteText = state.btnFavouriteText,
-                onAddToFavorite = onAddToFavorite
+                onAddToFavorite = { actionEvent.invoke(DetailRecipeViewModel.ActionEvent.OnBtnFavouriteClick) }
             )
         }
     }
@@ -80,13 +76,13 @@ fun RecipeDetailScreen(
 fun DetailScreen(
     title: String,
     image: String,
-    txtImgLoadFail:String,
+    txtImgLoadFail: String,
     instructions: String,
     ingredients: String,
     btnModifyText: String,
     btnFavouriteText: String,
     onclick: () -> Unit,
-    onAddToFavorite: () -> Unit
+    onAddToFavorite: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -126,8 +122,8 @@ fun DetailScreen(
             }
         )
         NameText(content = title)
-        CustomTextField(heading = "Ingredients", text = ingredients, height = 70.0)
-        CustomTextField(heading = "Instructions", text = instructions, height = 230.0)
+        CustomTextField(heading = "Ingredients", text = ingredients, height = 70.dp)
+        CustomTextField(heading = "Instructions", text = instructions, height = 230.dp)
         Row(
             modifier = Modifier
                 .fillMaxWidth(),

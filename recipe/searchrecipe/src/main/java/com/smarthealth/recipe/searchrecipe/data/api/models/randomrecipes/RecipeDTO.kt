@@ -1,6 +1,5 @@
 package com.smarthealth.recipe.searchrecipe.data.api.models.randomrecipes
 
-import com.smarthealth.recipe.searchrecipe.domain.models.randomrecipes.AnalyzedInstruction
 import com.smarthealth.recipe.searchrecipe.domain.models.randomrecipes.Recipe
 
 data class RecipeDTO(

@@ -8,3 +8,4 @@ data class RecipeHistory(
     val instructions: String,
     val ingredientsList: String
 )
+

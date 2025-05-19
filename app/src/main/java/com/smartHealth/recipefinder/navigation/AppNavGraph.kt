@@ -5,19 +5,18 @@ import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import com.smarthealth.recipe.makerecipe.navigation.MakeRecipeScreens
 import com.smarthealth.recipe.makerecipe.navigation.makeRecipeGraph
 import com.smarthealth.recipe.modifyrecipe.navigation.ModifyRecipeScreens
 import com.smarthealth.recipe.modifyrecipe.navigation.modifyNavRecipeGraph
 import com.smarthealth.recipe.searchrecipe.navigation.SearchRecipeScreens
 import com.smarthealth.recipe.searchrecipe.navigation.searchRecipeNavGraph
 import com.smarthealth.shared.navigation.detailScreenNavGraph
-import com.smarthealth.shared.presentation.viewmodels.MainActivitySharedViewModel
 
 @Composable
 fun AppNavGraph(
     navController: NavHostController,
-    mainActivitySharedViewModel: MainActivitySharedViewModel,
-    startDestination: Any = SearchRecipeScreens.AppEntryPoint
+    startDestination: Any = SearchRecipeScreens.AppEntryPoint,
 ) {
     NavHost(
         navController,
@@ -47,9 +46,11 @@ fun AppNavGraph(
             )
         }
     ) {
-        searchRecipeNavGraph(mainActivitySharedViewModel)
-        makeRecipeGraph(mainActivitySharedViewModel)
-        detailScreenNavGraph(onclick = {mainActivitySharedViewModel.navigate(ModifyRecipeScreens.ModifyRecipeEntryPoint)})
+        searchRecipeNavGraph(
+            navController = navController,
+            onBtnMakeClick = { navController.navigate(MakeRecipeScreens.MakeRecipeEntryPoint) })
+        makeRecipeGraph(navController = navController)
+        detailScreenNavGraph(onBtnModifyClick = { navController.navigate(ModifyRecipeScreens.ModifyRecipeEntryPoint) })
         modifyNavRecipeGraph()
     }
 }

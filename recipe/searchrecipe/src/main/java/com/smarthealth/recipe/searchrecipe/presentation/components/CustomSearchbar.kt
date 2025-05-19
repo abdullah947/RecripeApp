@@ -1,11 +1,9 @@
-package com.smarthealth.shared.presentation.components
+package com.smarthealth.recipe.searchrecipe.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -28,7 +26,6 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import com.smarthealth.shared.R
 
 @Composable
@@ -38,9 +35,8 @@ fun CustomSearchbar(
     onButtonClick: () -> Unit,
     buttonText: String,
     placeholder: String = "",
-    enabled: Boolean = false,
     suggestions: List<String> = emptyList(),
-    onSuggestionClick: (String) -> Unit = {}
+    onSuggestionClick: (String) -> Unit = {},
 ) {
     val showSuggestions = value.text.isNotBlank() && suggestions.isNotEmpty()
 
@@ -71,8 +67,7 @@ fun CustomSearchbar(
                 modifier = Modifier
                     .width(100.dp)
                     .height(56.dp),
-                shape = RectangleShape,
-                enabled = enabled
+                shape = RectangleShape
             ) {
                 Text(buttonText)
             }

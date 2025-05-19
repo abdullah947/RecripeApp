@@ -13,7 +13,6 @@ interface RecipeHistoryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRecipe(recipe: RecipeHistoryDTO)
 
-
     @Query("SELECT * FROM Recipes_table ORDER BY id DESC")
     fun getAllRecipes(): Flow<List<RecipeHistoryDTO>>
 

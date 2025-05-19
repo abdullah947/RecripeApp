@@ -1,7 +1,5 @@
 package com.smarthealth.recipe.searchrecipe.data.api.models.randomrecipes
 
-import com.smarthealth.recipe.searchrecipe.data.api.models.searchrecipes.toDomain
-import com.smarthealth.recipe.searchrecipe.domain.models.randomrecipes.Ingredient
 import com.smarthealth.recipe.searchrecipe.domain.models.randomrecipes.Step
 
 data class StepDTO(

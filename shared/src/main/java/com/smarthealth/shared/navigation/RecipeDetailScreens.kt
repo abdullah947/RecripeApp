@@ -1,9 +1,9 @@
 package com.smarthealth.shared.navigation
 
-import com.smarthealth.shared.presentation.viewmodels.Route
+
 import kotlinx.serialization.Serializable
 
-sealed class RecipeDetailScreens : Route {
+sealed class RecipeDetailScreens  {
 
     @Serializable
     data class DetailScreen(

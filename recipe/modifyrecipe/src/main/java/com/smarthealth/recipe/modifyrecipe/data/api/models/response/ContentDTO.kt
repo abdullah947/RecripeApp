@@ -6,6 +6,7 @@ data class ContentDTO(
     val parts: List<PartDTO>?,
     val role: String?
 )
+
 fun ContentDTO.toDomain(): Content {
     return Content(
         parts = parts?.map { it.toDomain()}?: emptyList(),

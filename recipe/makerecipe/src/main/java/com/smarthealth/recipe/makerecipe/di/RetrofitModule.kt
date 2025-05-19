@@ -6,7 +6,6 @@ import com.smarthealth.recipe.makerecipe.data.api.service.ApiService
 
 import org.koin.dsl.module
 
-
 val makeRecipeRetrofitModuleMake = module {
     single {
         RetrofitClient.getRetrofit(BaseUrl.SPOON_API)

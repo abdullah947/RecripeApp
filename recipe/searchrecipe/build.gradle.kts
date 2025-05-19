@@ -61,6 +61,6 @@ dependencies {
     implementation(project(":data:network"))
     implementation(project(":data:local"))
     implementation(project(":shared"))
-    implementation(project(":recipe:makerecipe"))
 
+     implementation (libs.compose.shimmer)
 }

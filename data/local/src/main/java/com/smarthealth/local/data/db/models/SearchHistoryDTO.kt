@@ -4,7 +4,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.smarthealth.local.domain.models.SearchHistory
 
-
 @Entity(tableName = "Searches_table")
 data class SearchHistoryDTO(
     @PrimaryKey(autoGenerate = true)
@@ -19,7 +18,7 @@ fun SearchHistoryDTO.toDomain(): SearchHistory {
     )
 }
 
-fun SearchHistory.toEntity():SearchHistoryDTO{
+fun SearchHistory.toDTO(): SearchHistoryDTO {
     return SearchHistoryDTO(
         id = id,
         searchText = searchText

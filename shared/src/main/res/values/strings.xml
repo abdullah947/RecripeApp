@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="txtImgLoadFail">Failed to load image</string>
+    <string name="btnModifyText">Modify Recipe</string>
+</resources>

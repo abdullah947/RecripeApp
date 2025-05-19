@@ -1,12 +1,10 @@
 package com.smarthealth.recipe.searchrecipe.domain.repo
 
 import com.smarthealth.network.utils.NetworkResult
-import com.smarthealth.recipe.searchrecipe.data.api.models.randomrecipes.RandomRecipeResponseDTO
-import com.smarthealth.recipe.searchrecipe.data.api.models.searchrecipes.SearchRecipeResponseDTO
+import com.smarthealth.recipe.searchrecipe.domain.models.randomrecipes.RandomRecipeResponse
+import com.smarthealth.recipe.searchrecipe.domain.models.searchrecipe.SearchRecipeResponse
 
 interface SearchRecipeRepo {
-    suspend fun getMeals(query: String): NetworkResult<SearchRecipeResponseDTO>
-    suspend fun getRandomMeals(number: Int, apiKey: String): NetworkResult<RandomRecipeResponseDTO>
-
-
+    suspend fun getMeals(query: String): NetworkResult<SearchRecipeResponse>
+    suspend fun getRandomMeals(number: Int, apiKey: String): NetworkResult<RandomRecipeResponse>
 }

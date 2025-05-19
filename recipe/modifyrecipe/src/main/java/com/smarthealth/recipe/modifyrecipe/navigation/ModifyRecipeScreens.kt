@@ -1,11 +1,9 @@
 package com.smarthealth.recipe.modifyrecipe.navigation
 
-import com.smarthealth.shared.presentation.viewmodels.Route
 import kotlinx.serialization.Serializable
 
-
 @Serializable
-sealed class ModifyRecipeScreens : Route {
+sealed class ModifyRecipeScreens {
 
     @Serializable
     data object ModifyRecipeEntryPoint : ModifyRecipeScreens()

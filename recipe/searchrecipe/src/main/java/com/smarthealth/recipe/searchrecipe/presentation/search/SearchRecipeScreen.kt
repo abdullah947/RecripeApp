@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
@@ -26,47 +25,49 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import com.smarthealth.local.data.db.models.RecipeHistoryDTO
+import com.smarthealth.local.domain.models.RecipeHistory
 import com.smarthealth.recipe.searchrecipe.R
+import com.smarthealth.recipe.searchrecipe.presentation.components.CustomSearchbar
 import com.smarthealth.shared.data.models.GridDish
-import com.smarthealth.shared.presentation.components.CustomSearchbar
 import com.smarthealth.shared.presentation.components.FavouriteList
+import com.smarthealth.shared.presentation.components.ShimmerLoadingScreen
 import com.smarthealth.shared.presentation.components.TwoColumnGrid
-
 
 @Composable
 fun SearchRecipeScreen(
     state: SearchRecipeScreenState = SearchRecipeScreenState(),
-    favouriteRecipes: State<List<RecipeHistoryDTO>>,
     actionEvent: (SearchRecipeViewModel.ActionEvent) -> Unit = {},
-    onSearchClick: () -> Unit,
-    onItemClick: (GridDish) -> Unit,
-    onMakeClick: () -> Unit
-) {
+    favouriteRecipes: State<List<RecipeHistory>>,
+    onBtnMakeClick: () -> Unit,
 
-    Box(modifier = Modifier.fillMaxSize() .windowInsetsPadding(WindowInsets.safeContent)) {
-
+    ) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .windowInsetsPadding(WindowInsets.safeContent)
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 10.dp),
-
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
             Spacer(modifier = Modifier.height(70.dp))
             Button(
-                onClick = onMakeClick,
+                onClick = onBtnMakeClick,
                 modifier = Modifier
                     .width(150.dp)
                     .height(50.dp)
                     .clip(RoundedCornerShape(10.dp)),
                 shape = RectangleShape
             ) {
-                Text(text = state.btnMakeText)
+                Text(text = stringResource(R.string.btnMakeText))
             }
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -81,21 +82,17 @@ fun SearchRecipeScreen(
                     )
                 },
                 onItemClick = { dish ->
-                    onItemClick(dish)
+                    run { actionEvent.invoke(SearchRecipeViewModel.ActionEvent.OnItemClick(dish)) }
                 },
-                imgLoadFail = state.txtImgLoadFail
+                imgLoadFail = stringResource(R.string.txtImgLoadFail)
             )
-
-
             if (state.isLoading) {
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    CircularProgressIndicator(
-                        color = Color.LightGray,
-                        modifier = Modifier.size(30.dp)
-                    )
+
+                    ShimmerLoadingScreen()
                 }
             } else {
                 if (!state.isSuccess) {
@@ -110,14 +107,23 @@ fun SearchRecipeScreen(
                                 modifier = Modifier.size(120.dp)
                             )
                             Spacer(modifier = Modifier.height(8.dp))
-                            Text(state.txtNoData, color = Color.Gray)
+                            Text(stringResource(R.string.txtNoData), color = Color.Gray)
                         }
                     }
                 } else {
                     TwoColumnGrid(
                         items = state.recipeList,
-                        onItemClick = onItemClick,
-                        imgLoadFail = state.txtImgLoadFail
+                        onItemClick = { dish ->
+                            run {
+                                actionEvent.invoke(
+                                    SearchRecipeViewModel.ActionEvent.OnItemClick(
+                                        dish
+                                    )
+                                )
+                            }
+                        },
+                        imgLoadFail = stringResource(R.string.txtImgLoadFail),
+                        modifier = Modifier
                     )
                 }
 
@@ -127,15 +133,17 @@ fun SearchRecipeScreen(
         CustomSearchbar(
             value = state.textSearch,
             onValueChange = { actionEvent(SearchRecipeViewModel.ActionEvent.OnTextChange(it)) },
-            onButtonClick = onSearchClick,
-            buttonText = state.btnSearchText,
-            placeholder = state.placeHolderText,
-            enabled = state.textSearch.text.isNotBlank(),
+            onButtonClick = { actionEvent(SearchRecipeViewModel.ActionEvent.OnSearchClick) },
+            buttonText = stringResource(R.string.btnSearchText),
+            placeholder = stringResource(R.string.placeHolderText),
             suggestions = state.searchSuggestions,
-            onSuggestionClick = {
-                actionEvent(SearchRecipeViewModel.ActionEvent.OnTextChange(TextFieldValue(it)))
+            onSuggestionClick = { suggestion ->
+                val textFieldValue = TextFieldValue(
+                    text = suggestion,
+                    selection = TextRange(suggestion.length)
+                )
+                actionEvent(SearchRecipeViewModel.ActionEvent.OnTextChange(textFieldValue))
             }
         )
     }
-
 }

@@ -7,9 +7,6 @@ import com.smarthealth.shared.data.models.GridDish
 data class MakeRecipeScreenState(
     val id: String = "",
     val textSearch: TextFieldValue = TextFieldValue(),
-    val btnText: String = "Search",
-    val placeHolderText: String = "Add Ingredients",
-    val txtImgLoadFail: String = "Failed to load image",
     val title: String = "",
     val imageUrl: String = "",
     val isMakeBtnClicked: Boolean = false,
@@ -18,5 +15,4 @@ data class MakeRecipeScreenState(
     val isSuccess: Boolean = true,
     val recipeList: List<GridDish> = emptyList(),
     val ingredientsList: List<IngredientsListItem> = emptyList()
-
 )

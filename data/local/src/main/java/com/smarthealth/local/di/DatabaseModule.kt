@@ -4,7 +4,6 @@ import androidx.room.Room
 import com.smarthealth.local.data.db.database.DataBase
 import org.koin.dsl.module
 
-
 val databaseModule = module {
 
     single {

@@ -16,11 +16,13 @@ import androidx.compose.foundation.layout.safeContent
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -32,23 +34,19 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.smarthealth.recipe.makerecipe.R
 import com.smarthealth.recipe.makerecipe.data.models.IngredientsListItem
+import com.smarthealth.shared.presentation.components.ShimmerLoadingScreen
 import com.smarthealth.shared.presentation.components.TwoColumnGrid
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CardDefaults
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
-import com.smarthealth.shared.data.models.GridDish
 
 @Composable
 fun MakeRecipeScreen(
     state: MakeRecipeScreenState = MakeRecipeScreenState(),
     actionEvent: (MakeRecipeViewModel.ActionEvent) -> Unit = {},
-    onclick: () -> Unit,
-    onItemClick: (GridDish) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -61,7 +59,7 @@ fun MakeRecipeScreen(
         TextField(
             value = state.textSearch,
             onValueChange = { actionEvent(MakeRecipeViewModel.ActionEvent.OnTextChange(it)) },
-            placeholder = { Text(state.placeHolderText) },
+            placeholder = { Text(stringResource(R.string.placeHolderText)) },
             modifier = Modifier
                 .height(100.dp)
                 .fillMaxWidth()
@@ -74,14 +72,14 @@ fun MakeRecipeScreen(
         Spacer(modifier = Modifier.height(10.dp))
 
         Button(
-            onClick = onclick,
+            onClick = { actionEvent.invoke(MakeRecipeViewModel.ActionEvent.OnMakeClick) },
             modifier = Modifier
                 .width(150.dp)
                 .height(50.dp)
                 .clip(RoundedCornerShape(10.dp)),
             shape = RectangleShape
         ) {
-            Text("Make Recipe")
+            Text(stringResource(R.string.btnText))
         }
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -92,10 +90,7 @@ fun MakeRecipeScreen(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    CircularProgressIndicator(
-                        color = Color.LightGray,
-                        modifier = Modifier.size(30.dp)
-                    )
+                    ShimmerLoadingScreen()
                 }
             } else {
                 if (!state.isSuccess) {
@@ -117,9 +112,16 @@ fun MakeRecipeScreen(
                     TwoColumnGrid(
                         items = state.recipeList,
                         onItemClick = { dish ->
-                            onItemClick(dish)
+                            run {
+                                actionEvent.invoke(
+                                    MakeRecipeViewModel.ActionEvent.OnItemClick(
+                                        dish
+                                    )
+                                )
+                            }
                         },
-                        imgLoadFail = state.txtImgLoadFail
+                        imgLoadFail = stringResource(R.string.txtImgLoadFail),
+                        modifier = Modifier
                     )
                 }
 
@@ -142,11 +144,10 @@ fun MakeRecipeScreen(
     }
 }
 
-
 @Composable
 fun IngredientsList(
     items: List<IngredientsListItem>,
-    onCheckedChange: (String, Boolean) -> Unit
+    onCheckedChange: (String, Boolean) -> Unit,
 ) {
     LazyColumn {
         items(items) { item ->
@@ -167,7 +168,7 @@ fun IngredientsListItem(
     name: String,
     image: Int,
     isChecked: Boolean,
-    onCheckedChange: (Boolean) -> Unit
+    onCheckedChange: (Boolean) -> Unit,
 ) {
     Card(
         elevation = CardDefaults.cardElevation(3.dp),
@@ -199,7 +200,6 @@ fun IngredientsListItem(
                 fontSize = 16.sp,
                 modifier = Modifier.weight(1f)
             )
-
 
             Checkbox(
                 checked = isChecked,

@@ -64,6 +64,6 @@ dependencies {
     implementation(project(":data:network"))
     implementation(project(":data:local"))
 
-
+    implementation (libs.compose.shimmer)
 
 }

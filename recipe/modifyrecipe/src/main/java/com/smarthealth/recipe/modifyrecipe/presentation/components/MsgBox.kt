@@ -18,12 +18,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smarthealth.recipe.modifyrecipe.R
 
-
 @Composable
-fun MsgBox(text: String, role:String) {
+fun MsgBox(text: String, role: String) {
 
     Row(
-        modifier = Modifier.fillMaxWidth().padding(10.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp),
         horizontalArrangement = if (role == "user") Arrangement.End else Arrangement.Start
     ) {
         Box(
@@ -37,11 +38,13 @@ fun MsgBox(text: String, role:String) {
                         bottomEnd = if (role == "user") 0f else 48f
                     )
                 )
-                .background(if (role == "user") Color.DarkGray else  colorResource(R.color.pink_custom))
+                .background(if (role == "user") Color.DarkGray else colorResource(R.color.pink_custom))
         ) {
-            Text(text = text, color = Color.White,
+            Text(
+                text = text, color = Color.White,
                 modifier = Modifier
-                    .padding(10.dp))
+                    .padding(10.dp)
+            )
 
         }
     }
@@ -50,5 +53,5 @@ fun MsgBox(text: String, role:String) {
 @Preview
 @Composable
 fun MsgSentBoxPreview() {
-    MsgBox(text = "Hello","user")
+    MsgBox(text = "Hello", "user")
 }

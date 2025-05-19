@@ -6,11 +6,6 @@ import com.smarthealth.shared.data.models.GridDish
 data class SearchRecipeScreenState(
     val id: String = "",
     val textSearch: TextFieldValue = TextFieldValue(),
-    val btnSearchText: String = "Search",
-    val btnMakeText: String = "Make Recipe",
-    val placeHolderText: String = "Search Recipe",
-    val txtNoData: String = "No recipes found",
-    val txtImgLoadFail: String = "Failed to load image",
     val title: String = "",
     val imageUrl: String = "",
     val isLoading: Boolean = true,

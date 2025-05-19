@@ -10,11 +10,12 @@ import androidx.lifecycle.viewModelScope
 import com.smarthealth.network.utils.ApiKeys
 import com.smarthealth.network.utils.NetworkResult
 import com.smarthealth.recipe.makerecipe.R
-import com.smarthealth.recipe.makerecipe.data.api.models.makerecipes.toDomain
 import com.smarthealth.recipe.makerecipe.data.models.IngredientsListItem
 import com.smarthealth.recipe.makerecipe.domain.repo.MakeRecipeRepo
 import com.smarthealth.shared.data.models.GridDish
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
 class MakeRecipeViewModel(private val repository: MakeRecipeRepo) : ViewModel() {
@@ -22,16 +23,22 @@ class MakeRecipeViewModel(private val repository: MakeRecipeRepo) : ViewModel() 
     var state by mutableStateOf(MakeRecipeScreenState())
         private set
 
+    private val _navigationEvent = MutableSharedFlow<NavigationEvent>()
+    val navigationEvent = _navigationEvent.asSharedFlow()
+
+    private val _uiEvent = MutableSharedFlow<UiEvent>()
+    val uiEvent = _uiEvent.asSharedFlow()
+
     init {
         loadIngredients()
     }
 
     fun onEvent(actionEvents: ActionEvent) {
-        state = when (actionEvents) {
-            is ActionEvent.OnTextChange -> {
-                state.copy(textSearch = actionEvents.text)
-            }
+        when (actionEvents) {
 
+            is ActionEvent.OnTextChange -> {
+                state = state.copy(textSearch = actionEvents.text)
+            }
             is ActionEvent.OnIngredientCheckedChange -> {
                 val updatedIngredients = state.ingredientsList.map { ingredient ->
                     if (ingredient.text == actionEvents.ingredientName) {
@@ -40,63 +47,66 @@ class MakeRecipeViewModel(private val repository: MakeRecipeRepo) : ViewModel() 
                         ingredient
                     }
                 }
-
                 val selectedIngredients = updatedIngredients
                     .filter { it.isChecked }
                     .joinToString(",") { it.text }
 
-                state.copy(
+                state = state.copy(
                     ingredientsList = updatedIngredients,
                     textSearch = TextFieldValue(selectedIngredients)
                 )
             }
+            is ActionEvent.OnItemClick -> {
+                onItemClicked(actionEvents.dish)
+            }
+            ActionEvent.OnMakeClick -> {
+                getRecipeData()
+            }
         }
     }
 
-    fun getRecipeData() {
-
+    private fun getRecipeData() {
         viewModelScope.launch(Dispatchers.IO) {
-
-            state = state.copy(isMakeBtnClicked = true)
-
-            val query = state.textSearch.text
-            val result = repository.getMealsByIngredients(query, ApiKeys.SPOON_API)
-
-            state = when (result) {
-                is NetworkResult.Success -> {
-                    val domainRecipes = result.data?.map { it.toDomain() } ?: emptyList()
-
-                    if (domainRecipes.isNotEmpty()) {
-                        val gridItems = domainRecipes.map { dish ->
-                            GridDish(
-                                id = dish.id,
-                                title = dish.title,
-                                imageUrl = dish.image,
-                                instructions = "",
-                                ingredientsList = ""
+            if (state.textSearch.text.trim().isEmpty()){
+                _uiEvent.emit(UiEvent.ShowToast("Please Add at least One Ingredient"))
+            }else{
+                _uiEvent.emit(UiEvent.HideKeyboard)
+                state = state.copy(isMakeBtnClicked = true)
+                val query = state.textSearch.text
+                val result = repository.getMealsByIngredients(query, ApiKeys.SPOON_API)
+                state = when (result) {
+                    is NetworkResult.Success -> {
+                        val domainRecipes = result.data ?: emptyList()
+                        if (domainRecipes.isNotEmpty()) {
+                            val gridItems = domainRecipes.map { dish ->
+                                GridDish(
+                                    id = dish.id,
+                                    title = dish.title,
+                                    imageUrl = dish.image,
+                                    instructions = "",
+                                    ingredientsList = ""
+                                )
+                            }
+                            state.copy(
+                                isSuccess = true,
+                                isLoading = false,
+                                recipeList = gridItems
+                            )
+                        } else {
+                            state.copy(
+                                isSuccess = false,
+                                isLoading = false,
+                                recipeList = emptyList()
                             )
                         }
-                        state.copy(
-                            isSuccess = true,
-                            isLoading = false,
-                            recipeList = gridItems
-                        )
-                    } else {
-                        state.copy(
-                            isSuccess = false,
-                            isLoading = false,
-                            recipeList = emptyList()
-                        )
                     }
-                }
-
-                is NetworkResult.Error -> {
-                    Log.d("RecipeFetcher", "Request failed: ${result.message}")
-                    state.copy(isSuccess = false, isLoading = false, recipeList = emptyList())
-                }
-
-                is NetworkResult.Loading -> {
-                    state.copy(isLoading = true)
+                    is NetworkResult.Error -> {
+                        Log.d("RecipeFetcher", "Request failed: ${result.message}")
+                        state.copy(isSuccess = false, isLoading = false, recipeList = emptyList())
+                    }
+                    is NetworkResult.Loading -> {
+                        state.copy(isLoading = true)
+                    }
                 }
             }
         }
@@ -105,6 +115,23 @@ class MakeRecipeViewModel(private val repository: MakeRecipeRepo) : ViewModel() 
     sealed class ActionEvent {
         data class OnTextChange(val text: TextFieldValue) : ActionEvent()
         data class OnIngredientCheckedChange(val ingredientName: String, val isChecked: Boolean) : ActionEvent()
+        data class OnItemClick(val dish: GridDish) : ActionEvent()
+        data object OnMakeClick : ActionEvent()
+    }
+
+    sealed class NavigationEvent {
+        data class ToDetailScreen(val dish: GridDish) : NavigationEvent()
+    }
+
+    sealed class UiEvent {
+        data object HideKeyboard : UiEvent()
+        data class ShowToast(val message: String) : UiEvent()
+    }
+
+    private fun onItemClicked(dish: GridDish) {
+        viewModelScope.launch {
+            _navigationEvent.emit(NavigationEvent.ToDetailScreen(dish))
+        }
     }
 
     private fun loadIngredients() {

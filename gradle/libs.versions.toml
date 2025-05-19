@@ -1,6 +1,8 @@
 [versions]
+accompanistPlaceholderMaterial = "0.32.0"
 agp = "8.8.1"
 coilCompose = "2.4.0"
+composeShimmer = "1.2.0"
 converterGson = "2.11.0"
 jsoup = "1.17.2"
 kotlin = "2.0.0"
@@ -28,8 +30,10 @@ roomKtx = "2.6.1"
 
 
 [libraries]
+accompanist-placeholder-material = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "accompanistPlaceholderMaterial" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
+compose-shimmer = { module = "com.valentinilk.shimmer:compose-shimmer", version.ref = "composeShimmer" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

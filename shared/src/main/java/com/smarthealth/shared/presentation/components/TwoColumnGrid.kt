@@ -16,12 +16,12 @@ import com.smarthealth.shared.data.models.GridDish
 fun TwoColumnGrid(
     items: List<GridDish>,
     imgLoadFail: String,
-    onItemClick: (GridDish) -> Unit
-
+    onItemClick: (GridDish) -> Unit,
+    modifier: Modifier
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(8.dp),
         contentPadding = PaddingValues(8.dp),

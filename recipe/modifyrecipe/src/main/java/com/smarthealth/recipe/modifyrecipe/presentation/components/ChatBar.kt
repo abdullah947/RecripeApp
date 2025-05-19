@@ -16,13 +16,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.smarthealth.recipe.modifyrecipe.R
-import kotlin.reflect.jvm.internal.impl.types.checker.TypeRefinementSupport.Enabled
 
 @Composable
 fun ChatBar(
@@ -30,8 +28,8 @@ fun ChatBar(
     onValueChange: (TextFieldValue) -> Unit,
     placeholder: String = "",
     onSendClick: () -> Unit,
-    enabled: Boolean = false
-) {
+
+    ) {
     Row(
         modifier = Modifier
             .fillMaxWidth(),
@@ -60,11 +58,7 @@ fun ChatBar(
 
             modifier = Modifier
                 .size(60.dp)
-                .graphicsLayer { alpha = if (enabled) 1f else 0.3f }
-                .then(
-                    if (enabled) Modifier.clickable { onSendClick() }
-                    else Modifier
-                ),
+                .clickable { onSendClick() },
             contentScale = ContentScale.Crop
         )
     }

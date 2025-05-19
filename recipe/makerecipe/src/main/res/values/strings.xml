@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="btnText">Make Recipe</string>
+    <string name="placeHolderText">Add Ingredients</string>
+    <string name="txtImgLoadFail">Failed to load image</string>
+
+</resources>

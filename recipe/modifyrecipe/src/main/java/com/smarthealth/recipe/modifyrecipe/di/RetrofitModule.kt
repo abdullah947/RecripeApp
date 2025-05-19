@@ -5,7 +5,6 @@ import com.smarthealth.network.utils.RetrofitClient
 import com.smarthealth.recipe.modifyrecipe.data.api.service.ApiService
 import org.koin.dsl.module
 
-
 val modifyRecipeRetrofitModuleMake = module {
     single {
         RetrofitClient.getRetrofit(BaseUrl.GEMINI_API)

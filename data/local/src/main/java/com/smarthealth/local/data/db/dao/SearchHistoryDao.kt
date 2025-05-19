@@ -12,8 +12,9 @@ interface SearchHistoryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSearch(recipe: SearchHistoryDTO)
 
-
     @Query("SELECT searchText FROM Searches_table WHERE searchText LIKE '%' || :query || '%' ")
     suspend fun getSuggestions(query: String): List<String>
 
+    @Query("SELECT * FROM Searches_table")
+    suspend fun getAllSearches(): List<SearchHistoryDTO>
 }

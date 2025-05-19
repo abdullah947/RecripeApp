@@ -26,9 +26,9 @@ fun RecipeHistoryDTO.toDomain(): RecipeHistory{
     )
 }
 
-fun RecipeHistory.toEntity():RecipeHistoryDTO{
+fun RecipeHistory.toDTO(): RecipeHistoryDTO {
     return RecipeHistoryDTO(
-        id= id,
+        id = id,
         dishId = dishId,
         title = title,
         imageUrl = imageUrl,

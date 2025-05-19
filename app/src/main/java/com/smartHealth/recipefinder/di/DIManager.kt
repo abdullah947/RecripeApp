@@ -63,7 +63,7 @@ class DIManager private constructor(private val application: Context) {
 
     private val dbModuleList
         get() = listOf(
-           databaseModule
+            databaseModule
         )
 
     private val moduleList

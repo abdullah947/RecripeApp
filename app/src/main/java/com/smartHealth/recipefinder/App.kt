@@ -1,6 +1,5 @@
 package com.smartHealth.recipefinder
 
-
 import android.app.Application
 import com.smartHealth.recipefinder.di.DIManager
 
