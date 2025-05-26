@@ -59,30 +59,34 @@ data class MealDTO(
 )
 
 fun MealDTO.toDomain(): Meal {
+    val ingredientsList= listOfNotNull(
+        strIngredient1,
+        strIngredient2,
+        strIngredient3,
+        strIngredient4,
+        strIngredient5,
+        strIngredient6,
+        strIngredient7,
+        strIngredient8,
+        strIngredient9,
+        strIngredient10,
+        strIngredient11,
+        strIngredient12,
+        strIngredient13,
+        strIngredient14,
+        strIngredient15,
+        strIngredient16,
+        strIngredient17,
+        strIngredient18,
+        strIngredient19,
+        strIngredient20
+    ).filter { it.isNotBlank() }
+
     return Meal(
         idMeal = idMeal.orEmpty(),
         strMeal = strMeal.orEmpty(),
         strMealThumb = strMealThumb.orEmpty(),
         strInstructions = strInstructions.orEmpty(),
-        strIngredient1 = strIngredient1.orEmpty(),
-        strIngredient2 = strIngredient2.orEmpty(),
-        strIngredient3 = strIngredient3.orEmpty(),
-        strIngredient4 = strIngredient4.orEmpty(),
-        strIngredient5 = strIngredient5.orEmpty(),
-        strIngredient6 = strIngredient6.orEmpty(),
-        strIngredient7 = strIngredient7.orEmpty(),
-        strIngredient8 = strIngredient8.orEmpty(),
-        strIngredient9 = strIngredient9.orEmpty(),
-        strIngredient10 = strIngredient10.orEmpty(),
-        strIngredient11 = strIngredient11.orEmpty(),
-        strIngredient12 = strIngredient12.orEmpty(),
-        strIngredient13 = strIngredient13.orEmpty(),
-        strIngredient14 = strIngredient14.orEmpty(),
-        strIngredient15 = strIngredient15.orEmpty(),
-        strIngredient16 = strIngredient16.orEmpty(),
-        strIngredient17 = strIngredient17.orEmpty(),
-        strIngredient18 = strIngredient18.orEmpty(),
-        strIngredient19 = strIngredient19.orEmpty(),
-        strIngredient20 = strIngredient20.orEmpty()
+        ingredientsList = ingredientsList.joinToString(",")
     )
 }

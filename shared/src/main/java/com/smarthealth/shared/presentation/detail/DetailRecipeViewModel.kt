@@ -23,7 +23,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.lang.ref.WeakReference
 
 class DetailRecipeViewModel(
@@ -53,7 +52,7 @@ class DetailRecipeViewModel(
 
     init {
 
-        if (dishItem.instructions == "" && dishItem.ingredientsList == "") {
+        if (dishItem.instructions.isBlank() && dishItem.ingredientsList.isBlank()) {
             getMakeRecipeDetail(gridDish)
 
         } else {
@@ -67,6 +66,10 @@ class DetailRecipeViewModel(
         when (actionEvents) {
             ActionEvent.OnBtnFavouriteClick -> {
                 onBtnFavouriteClick()
+            }
+
+            ActionEvent.OnBtnModifyClick -> {
+                onBtnModifyClick()
             }
         }
     }
@@ -159,7 +162,6 @@ class DetailRecipeViewModel(
             updateFavouriteBtnText(state.isFavourite)
             viewModelScope.launch(Dispatchers.IO) {
                 _uiEvent.emit(UiEvent.ShowToast("Added to Favourites"))
-
             }
 
         } else {
@@ -177,14 +179,14 @@ class DetailRecipeViewModel(
     }
 
     private suspend fun checkIfFavourite(id: String): Boolean {
-        return withContext(Dispatchers.IO) {
-            val recipe = recipesRepo.getSpecificRecipe(id)
-            recipe != null
-        }
+        return  recipesRepo.getSpecificRecipe(id) != null
     }
 
-    fun onBtnModifyClick() {
+
+
+    private fun onBtnModifyClick() {
         contextRef.get()?.let { ctx ->
+
             val instructionsToCopy = state.instructions
 
             val clipboardManager = ContextCompat.getSystemService(
@@ -199,6 +201,7 @@ class DetailRecipeViewModel(
 
     sealed class ActionEvent {
         data object OnBtnFavouriteClick : ActionEvent()
+        data object OnBtnModifyClick : ActionEvent()
     }
 
     sealed class UiEvent {

@@ -20,8 +20,8 @@ import kotlinx.coroutines.launch
 
 class SearchRecipeViewModel(
     private val searchRepo: SearchRecipeRepo,
-    recipeHistoryRepo: RecipeHistoryRepo,
     private val searchHistoryRepo: SearchHistoryRepo,
+    recipeHistoryRepo: RecipeHistoryRepo
 ) : ViewModel() {
 
     var state by mutableStateOf(SearchRecipeScreenState())
@@ -38,6 +38,7 @@ class SearchRecipeViewModel(
     init {
         getRandomRecipeData()
     }
+
 
     fun onEvent(actionEvents: ActionEvent) = viewModelScope.launch {
         when (actionEvents) {
@@ -64,10 +65,9 @@ class SearchRecipeViewModel(
 
     private fun getSearchRecipeData() {
         viewModelScope.launch(Dispatchers.IO) {
-            if (state.textSearch.text.isEmpty()) {
+            if (state.textSearch.text.isBlank()) {
                 viewModelScope.launch(Dispatchers.IO) {
                     _uiEvent.emit(UiEvent.ShowToast("Please write something"))
-
                 }
             } else {
                 _uiEvent.emit(UiEvent.HideKeyboard)
@@ -78,37 +78,15 @@ class SearchRecipeViewModel(
 
                 state = when (result) {
                     is NetworkResult.Success -> {
-                        val domainMeals = result.data?.meals ?: emptyList()
-                        val gridItems = domainMeals.map { meal ->
-                            val ingredientsList = listOfNotNull(
-                                meal.strIngredient1,
-                                meal.strIngredient2,
-                                meal.strIngredient3,
-                                meal.strIngredient4,
-                                meal.strIngredient5,
-                                meal.strIngredient6,
-                                meal.strIngredient7,
-                                meal.strIngredient8,
-                                meal.strIngredient9,
-                                meal.strIngredient10,
-                                meal.strIngredient11,
-                                meal.strIngredient12,
-                                meal.strIngredient13,
-                                meal.strIngredient14,
-                                meal.strIngredient15,
-                                meal.strIngredient16,
-                                meal.strIngredient17,
-                                meal.strIngredient18,
-                                meal.strIngredient19,
-                                meal.strIngredient20
-                            ).filter { it.isNotBlank() }
+                        val meals = result.data?.meals ?: emptyList()
+                        val gridItems = meals.map { meal ->
 
                             GridDish(
                                 id = meal.idMeal,
                                 title = meal.strMeal,
                                 imageUrl = meal.strMealThumb,
                                 instructions = meal.strInstructions,
-                                ingredientsList = ingredientsList.joinToString(",")
+                                ingredientsList = meal.ingredientsList
                             )
                         }
                         if (gridItems.isEmpty()) {

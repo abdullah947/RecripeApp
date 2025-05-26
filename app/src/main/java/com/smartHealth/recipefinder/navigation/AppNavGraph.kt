@@ -46,11 +46,9 @@ fun AppNavGraph(
             )
         }
     ) {
-        searchRecipeNavGraph(
-            navController = navController,
-            onBtnMakeClick = { navController.navigate(MakeRecipeScreens.MakeRecipeEntryPoint) })
+        searchRecipeNavGraph(navController = navController)
         makeRecipeGraph(navController = navController)
-        detailScreenNavGraph(onBtnModifyClick = { navController.navigate(ModifyRecipeScreens.ModifyRecipeEntryPoint) })
+        detailScreenNavGraph()
         modifyNavRecipeGraph()
     }
 }

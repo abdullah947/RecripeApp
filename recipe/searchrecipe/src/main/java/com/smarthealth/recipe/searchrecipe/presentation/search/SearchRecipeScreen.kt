@@ -33,6 +33,8 @@ import com.smarthealth.local.domain.models.RecipeHistory
 import com.smarthealth.recipe.searchrecipe.R
 import com.smarthealth.recipe.searchrecipe.presentation.components.CustomSearchbar
 import com.smarthealth.shared.data.models.GridDish
+import com.smarthealth.shared.presentation.MainViewModel.MainActivityVM
+import com.smarthealth.shared.presentation.MainViewModel.MainVmNavigationEvent
 import com.smarthealth.shared.presentation.components.FavouriteList
 import com.smarthealth.shared.presentation.components.ShimmerLoadingScreen
 import com.smarthealth.shared.presentation.components.TwoColumnGrid
@@ -42,9 +44,10 @@ fun SearchRecipeScreen(
     state: SearchRecipeScreenState = SearchRecipeScreenState(),
     actionEvent: (SearchRecipeViewModel.ActionEvent) -> Unit = {},
     favouriteRecipes: State<List<RecipeHistory>>,
-    onBtnMakeClick: () -> Unit,
+    mainVMAction: (MainActivityVM.ActionEvent) -> Unit = {}
 
     ) {
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -60,7 +63,13 @@ fun SearchRecipeScreen(
 
             Spacer(modifier = Modifier.height(70.dp))
             Button(
-                onClick = onBtnMakeClick,
+                onClick = {
+                    mainVMAction.invoke(
+                        MainActivityVM.ActionEvent.Navigate(
+                            MainVmNavigationEvent.MakeRecipe.Feature
+                        )
+                    )
+                },
                 modifier = Modifier
                     .width(150.dp)
                     .height(50.dp)
@@ -82,7 +91,7 @@ fun SearchRecipeScreen(
                     )
                 },
                 onItemClick = { dish ->
-                    run { actionEvent.invoke(SearchRecipeViewModel.ActionEvent.OnItemClick(dish)) }
+                    actionEvent.invoke(SearchRecipeViewModel.ActionEvent.OnItemClick(dish))
                 },
                 imgLoadFail = stringResource(R.string.txtImgLoadFail)
             )
@@ -114,13 +123,8 @@ fun SearchRecipeScreen(
                     TwoColumnGrid(
                         items = state.recipeList,
                         onItemClick = { dish ->
-                            run {
-                                actionEvent.invoke(
-                                    SearchRecipeViewModel.ActionEvent.OnItemClick(
-                                        dish
-                                    )
-                                )
-                            }
+                                actionEvent.invoke(SearchRecipeViewModel.ActionEvent.OnItemClick(dish))
+
                         },
                         imgLoadFail = stringResource(R.string.txtImgLoadFail),
                         modifier = Modifier

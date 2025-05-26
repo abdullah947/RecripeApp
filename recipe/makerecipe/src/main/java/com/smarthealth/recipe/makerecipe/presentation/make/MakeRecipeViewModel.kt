@@ -59,7 +59,7 @@ class MakeRecipeViewModel(private val repository: MakeRecipeRepo) : ViewModel() 
             is ActionEvent.OnItemClick -> {
                 onItemClicked(actionEvents.dish)
             }
-            ActionEvent.OnMakeClick -> {
+            is ActionEvent.OnMakeClick -> {
                 getRecipeData()
             }
         }
@@ -76,9 +76,9 @@ class MakeRecipeViewModel(private val repository: MakeRecipeRepo) : ViewModel() 
                 val result = repository.getMealsByIngredients(query, ApiKeys.SPOON_API)
                 state = when (result) {
                     is NetworkResult.Success -> {
-                        val domainRecipes = result.data ?: emptyList()
-                        if (domainRecipes.isNotEmpty()) {
-                            val gridItems = domainRecipes.map { dish ->
+                        val recipes = result.data ?: emptyList()
+                        if (recipes.isNotEmpty()) {
+                            val gridItems = recipes.map { dish ->
                                 GridDish(
                                     id = dish.id,
                                     title = dish.title,

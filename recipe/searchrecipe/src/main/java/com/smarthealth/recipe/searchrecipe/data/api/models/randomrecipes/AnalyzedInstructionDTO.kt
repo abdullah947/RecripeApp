@@ -14,3 +14,4 @@ fun AnalyzedInstructionDTO.toDomain(): AnalyzedInstruction {
         steps = steps?.map { it.toDomain() } ?: emptyList()
     )
 }
+

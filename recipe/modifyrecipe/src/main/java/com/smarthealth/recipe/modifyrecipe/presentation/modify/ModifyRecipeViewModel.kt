@@ -12,8 +12,6 @@ import androidx.lifecycle.viewModelScope
 import com.smarthealth.network.utils.ApiKeys
 import com.smarthealth.network.utils.NetworkResult
 import com.smarthealth.recipe.modifyrecipe.data.api.models.request.GeminiRequest
-import com.smarthealth.recipe.modifyrecipe.data.api.models.response.ContentDTO
-import com.smarthealth.recipe.modifyrecipe.data.api.models.response.PartDTO
 import com.smarthealth.recipe.modifyrecipe.domain.models.Content
 import com.smarthealth.recipe.modifyrecipe.domain.models.Part
 import com.smarthealth.recipe.modifyrecipe.domain.repo.ModifyRecipeRepo
@@ -42,6 +40,7 @@ class ModifyRecipeViewModel(private val repository: ModifyRecipeRepo, context: C
         when (actionEvents) {
             is ActionEvent.OnTextChange -> {
                 state = state.copy(textRequest = actionEvents.text)
+
             }
 
             ActionEvent.OnBtnSendClick -> {
@@ -52,7 +51,7 @@ class ModifyRecipeViewModel(private val repository: ModifyRecipeRepo, context: C
 
     private fun chatWithAi() {
         viewModelScope.launch(Dispatchers.IO) {
-            if (state.textRequest.text.trim().isEmpty()) {
+            if (state.textRequest.text.isBlank()) {
                 viewModelScope.launch(Dispatchers.IO) {
                     _uiEvent.emit(UiEvent.ShowToast("Please Write Something"))
                 }
@@ -71,8 +70,8 @@ class ModifyRecipeViewModel(private val repository: ModifyRecipeRepo, context: C
                 clearText()
                 val request = GeminiRequest(
                     contents = listOf(
-                        ContentDTO(
-                            parts = listOf(PartDTO(query)),
+                        Content(
+                            parts = listOf(Part(query)),
                             role = "user"
                         )
                     )

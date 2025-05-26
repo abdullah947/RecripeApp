@@ -2,7 +2,7 @@
 <resources>
 
     <string name="btnText">Make Recipe</string>
-    <string name="placeHolderText">Add Ingredients</string>
+    <string name="hint_make_Text">Add Ingredients</string>
     <string name="txtImgLoadFail">Failed to load image</string>
 
 </resources>

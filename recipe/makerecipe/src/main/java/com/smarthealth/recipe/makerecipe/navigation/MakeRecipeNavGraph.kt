@@ -11,17 +11,19 @@ import androidx.navigation.navigation
 import com.smarthealth.recipe.makerecipe.presentation.make.MakeRecipeScreen
 import com.smarthealth.recipe.makerecipe.presentation.make.MakeRecipeViewModel
 import com.smarthealth.shared.navigation.RecipeDetailScreens
+import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.compose.koinViewModel
 
 fun NavGraphBuilder.makeRecipeGraph(navController: NavController) {
     navigation<MakeRecipeScreens.MakeRecipeEntryPoint>(startDestination = MakeRecipeScreens.MakeRecipe) {
         composable<MakeRecipeScreens.MakeRecipe> {
+
             val context = LocalContext.current
             val viewModel: MakeRecipeViewModel = koinViewModel()
             val keyboardController = LocalSoftwareKeyboardController.current
 
             LaunchedEffect(Unit) {
-                viewModel.navigationEvent.collect { event ->
+                viewModel.navigationEvent.collectLatest { event ->
                     when (event) {
                         is MakeRecipeViewModel.NavigationEvent.ToDetailScreen -> {
                             val dish = event.dish
@@ -40,7 +42,7 @@ fun NavGraphBuilder.makeRecipeGraph(navController: NavController) {
             }
 
             LaunchedEffect(Unit) {
-                viewModel.uiEvent.collect { event ->
+                viewModel.uiEvent.collectLatest { event ->
                     when (event) {
                         is MakeRecipeViewModel.UiEvent.HideKeyboard -> {
                             keyboardController?.hide()

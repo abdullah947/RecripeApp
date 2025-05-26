@@ -58,7 +58,6 @@ fun GridDishItem(
             SubcomposeAsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(dish.imageUrl)
-                    .crossfade(true)
                     .build(),
                 contentDescription = "ImgDish",
                 modifier = Modifier

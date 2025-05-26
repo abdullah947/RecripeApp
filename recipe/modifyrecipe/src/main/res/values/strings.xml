@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="placeHolderText">Ask Any Thing</string>
+    <string name="hint_text">Ask Any Thing</string>
     <string name="NetworkError">Network Error!</string>
 </resources>

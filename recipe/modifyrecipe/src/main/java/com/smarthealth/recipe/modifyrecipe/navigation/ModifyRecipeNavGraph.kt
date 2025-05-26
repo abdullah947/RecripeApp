@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.smarthealth.recipe.modifyrecipe.presentation.modify.ModifyRecipeScreen
 import com.smarthealth.recipe.modifyrecipe.presentation.modify.ModifyRecipeViewModel
+import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.compose.koinViewModel
 
 fun NavGraphBuilder.modifyNavRecipeGraph() {
@@ -16,7 +17,7 @@ fun NavGraphBuilder.modifyNavRecipeGraph() {
             val context = LocalContext.current
             val viewModel: ModifyRecipeViewModel = koinViewModel()
             LaunchedEffect(Unit) {
-                viewModel.uiEvent.collect { event ->
+                viewModel.uiEvent.collectLatest { event ->
                     when (event) {
                         is ModifyRecipeViewModel.UiEvent.ShowToast -> {
                             Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()

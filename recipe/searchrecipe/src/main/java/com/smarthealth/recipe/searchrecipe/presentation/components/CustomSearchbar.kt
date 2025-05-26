@@ -36,7 +36,7 @@ fun CustomSearchbar(
     buttonText: String,
     placeholder: String = "",
     suggestions: List<String> = emptyList(),
-    onSuggestionClick: (String) -> Unit = {},
+    onSuggestionClick: (String) -> Unit ,
 ) {
     val showSuggestions = value.text.isNotBlank() && suggestions.isNotEmpty()
 
@@ -99,6 +99,7 @@ fun CustomSearchbar(
 }
 
 
+/*
 @Preview
 @Composable
 private fun CustomSearchbarPreview() {
@@ -110,3 +111,4 @@ private fun CustomSearchbarPreview() {
         placeholder = "Recipe"
     )
 }
+*/

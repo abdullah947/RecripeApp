@@ -13,7 +13,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -28,11 +27,7 @@ fun ModifyRecipeScreen(
     state: ModifyRecipeScreenState = ModifyRecipeScreenState(),
     actionEvent: (ModifyRecipeViewModel.ActionEvent) -> Unit = {},
 ) {
-    val adjustedText = remember(state.textRequest.text) {
-        state.textRequest.copy(
-            selection = androidx.compose.ui.text.TextRange(state.textRequest.text.length)
-        )
-    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -91,9 +86,9 @@ fun ModifyRecipeScreen(
             }
         }
         ChatBar(
-            value = adjustedText,
+            value = state.textRequest,
             onValueChange = { actionEvent(ModifyRecipeViewModel.ActionEvent.OnTextChange(it)) },
-            placeholder = stringResource(R.string.placeHolderText),
+            placeholder = stringResource(R.string.hint_text),
             onSendClick = { actionEvent.invoke(ModifyRecipeViewModel.ActionEvent.OnBtnSendClick) }
         )
     }

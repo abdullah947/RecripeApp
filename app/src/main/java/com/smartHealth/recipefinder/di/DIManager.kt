@@ -59,6 +59,7 @@ class DIManager private constructor(private val application: Context) {
             makeRecipeViewModelModule,
             detailRecipeViewModelModule,
             modifyRecipeViewModelModule
+
         )
 
     private val dbModuleList

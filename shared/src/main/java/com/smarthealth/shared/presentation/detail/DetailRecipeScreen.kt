@@ -29,6 +29,8 @@ import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import com.smarthealth.shared.R
+import com.smarthealth.shared.presentation.MainViewModel.MainActivityVM
+import com.smarthealth.shared.presentation.MainViewModel.MainVmNavigationEvent
 import com.smarthealth.shared.presentation.components.CustomButton
 import com.smarthealth.shared.presentation.components.CustomTextField
 import com.smarthealth.shared.presentation.components.LottieLoader
@@ -38,7 +40,7 @@ import com.smarthealth.shared.presentation.components.NameText
 fun RecipeDetailScreen(
     state: DetailRecipeScreenState = DetailRecipeScreenState(),
     actionEvent: (DetailRecipeViewModel.ActionEvent) -> Unit = {},
-    onBtnModifyClick: () -> Unit,
+    mainVMAction: (MainActivityVM.ActionEvent) -> Unit = {}
 ) {
     if (state.isLoading) {
         Box(
@@ -62,7 +64,10 @@ fun RecipeDetailScreen(
                 instructions = state.instructions,
                 ingredients = state.ingredients,
                 btnModifyText = stringResource(R.string.btnModifyText),
-                onclick = onBtnModifyClick,
+                onclick ={
+                    actionEvent.invoke(DetailRecipeViewModel.ActionEvent.OnBtnModifyClick)
+                    mainVMAction.invoke(MainActivityVM.ActionEvent.Navigate(MainVmNavigationEvent.ModifyRecipe.Feature))
+                },
                 txtImgLoadFail = stringResource(R.string.txtImgLoadFail),
                 btnFavouriteText = state.btnFavouriteText,
                 onAddToFavorite = { actionEvent.invoke(DetailRecipeViewModel.ActionEvent.OnBtnFavouriteClick) }
@@ -94,7 +99,6 @@ fun DetailScreen(
         SubcomposeAsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
                 .data(image)
-                .crossfade(true)
                 .build(),
             contentDescription = "ImgDish",
             modifier = Modifier
