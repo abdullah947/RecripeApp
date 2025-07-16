@@ -89,7 +89,7 @@ fun ModifyRecipeScreen(
             value = state.textRequest,
             onValueChange = { actionEvent(ModifyRecipeViewModel.ActionEvent.OnTextChange(it)) },
             placeholder = stringResource(R.string.hint_text),
-            onSendClick = { actionEvent.invoke(ModifyRecipeViewModel.ActionEvent.OnBtnSendClick) }
+            onSendClick = { actionEvent(ModifyRecipeViewModel.ActionEvent.OnBtnSendClick) }
         )
     }
 }
